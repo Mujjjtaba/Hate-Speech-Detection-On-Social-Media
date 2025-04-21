@@ -1,0 +1,20 @@
+Logistic Regression Report:
+              precision    recall  f1-score   support
+
+           0       0.68      0.67      0.67      3098
+           1       0.71      0.72      0.71      3456
+
+    accuracy                           0.69      6554
+   macro avg       0.69      0.69      0.69      6554
+weighted avg       0.69      0.69      0.69      6554
+
+
+XGBoost Report:
+              precision    recall  f1-score   support
+
+           0       0.66      0.70      0.68      3098
+           1       0.72      0.68      0.70      3456
+
+    accuracy                           0.69      6554
+   macro avg       0.69      0.69      0.69      6554
+weighted avg       0.69      0.69      0.69      6554

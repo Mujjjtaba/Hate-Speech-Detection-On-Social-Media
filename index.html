@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hate Speech Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ Hate Speech Detection</h1>
+        <form id="prediction-form">
+            <textarea name="text" placeholder="Enter a sentence..." required></textarea>
+            <button type="submit">Predict</button>
+        </form>
+
+        <div id="results" class="hidden">
+            <h2>🔍 Prediction Results</h2>
+            <p><strong>Input:</strong> <span id="input-text"></span></p>
+            <div class="result">
+                <h3>Logistic Regression</h3>
+                <p><strong>Prediction:</strong> <span id="logreg-pred"></span></p>
+                <p><strong>Accuracy:</strong> <span id="logreg-acc"></span></p>
+            </div>
+            <div class="result">
+                <h3>XGBoost</h3>
+                <p><strong>Prediction:</strong> <span id="xgb-pred"></span></p>
+                <p><strong>Accuracy:</strong> <span id="xgb-acc"></span></p>
+            </div>
+        </div>
+
+        <h2>📊 Data Visualizations</h2>
+        <div class="graphs">
+            <!-- Existing Graphs -->
+            <img src="{{ url_for('static', filename='label_distribution copy.png') }}" alt="Label Distribution">
+            <img src="{{ url_for('static', filename='model_accuracy copy.png') }}" alt="Model Accuracy Comparison">
+
+            <!-- Newly Added Graphs -->
+            <!--<img src="{{ url_for('static', filename='label_distribution_pie.png') }}" alt="Label Distribution Pie Chart">-->
+            <!--<img src="{{ url_for('static', filename='confusion_matrix_logreg.png') }}" alt="Confusion Matrix - Logistic Regression">
+            <img src="{{ url_for('static', filename='confusion_matrix_xgb.png') }}" alt="Confusion Matrix - XGBoost">-->
+            <img src="{{ url_for('static', filename='model_training_time.png') }}" alt="Model Training Time">
+            <img src="{{ url_for('static', filename='confusion_matrices.png') }}" alt="Confusion Matrices">
+
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('prediction-form');
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            document.getElementById('input-text').textContent = data.input_text;
+            document.getElementById('logreg-pred').textContent = data.logistic_regression.prediction;
+            document.getElementById('logreg-acc').textContent = data.logistic_regression.accuracy;
+            document.getElementById('xgb-pred').textContent = data.xgboost.prediction;
+            document.getElementById('xgb-acc').textContent = data.xgboost.accuracy;
+            document.getElementById('results').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
