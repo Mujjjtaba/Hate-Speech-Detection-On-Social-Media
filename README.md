@@ -11,7 +11,7 @@
 
 **A full-stack machine learning web application that detects hate speech in real time using Logistic Regression and XGBoost, trained on 32,000+ labeled social media text samples.**
 
-[🌐 Live Demo (Local)](#-getting-started) · [📄 Project Report](./finalDataScprj.pdf) · [🔗 LinkedIn Post](https://www.linkedin.com/posts/mujtaba11_machinelearning-nlp-ai-activity-7316127508809019392-aZt3) · [📊 Dataset](https://catalog.data.gov/dataset/border-crossing-entry-data-683ae)
+[🌐 Live Demo (Local)](#-getting-started) · [🔗 LinkedIn Post](https://www.linkedin.com/posts/mujtaba11_machinelearning-nlp-ai-activity-7316127508809019392-aZt3) 
 
 </div>
 
