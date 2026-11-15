@@ -1,257 +1,177 @@
-# 🛡️ Hate Speech Detection on Social Media
+# Hate Speech Detection on Social Media
 
-<div align="center">
+A machine-learning web application that classifies text as **Hate Speech** or **Not Hate Speech** using TF-IDF, Logistic Regression, and XGBoost. A Flask application serves predictions through a browser-based interface.
 
-![Python](https://img.shields.io/badge/Python-3.9-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Flask](https://img.shields.io/badge/Flask-Backend-000000?style=for-the-badge&logo=flask&logoColor=white)
-![Scikit-learn](https://img.shields.io/badge/Scikit--learn-ML-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)
-![XGBoost](https://img.shields.io/badge/XGBoost-Classifier-189AB4?style=for-the-badge)
-![NLP](https://img.shields.io/badge/NLP-TF--IDF-green?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+## Project overview
 
-**A full-stack machine learning web application that detects hate speech in real time using Logistic Regression and XGBoost, trained on 32,000+ labeled social media text samples.**
+The project uses the `label` column in the Dynamically Generated Hate Dataset **entries** CSV. The entries file already contains the binary labels `hate` and `nothate`; the separate targets CSV contains target-category indicator columns and is not used for this binary classification pipeline.
 
-[🌐 Live Demo (Local)](#-getting-started) · [🔗 LinkedIn Post](https://www.linkedin.com/posts/mujtaba11_machinelearning-nlp-ai-activity-7316127508809019392-aZt3) 
+- Original records: **40,623**
+- Records after cleaning: **40,453**
+- Training records (80%): **32,362**
+- Test records (20%): **8,091**
+- TF-IDF vocabulary limit: **10,000 features**
+- Split: stratified, `random_state=42`
 
-</div>
+## Latest measured results
 
----
+These are the metrics from the successfully executed local training run. Results can vary if the dataset, environment, library versions, or code changes.
 
-## 📌 Overview
+| Metric | Logistic Regression | XGBoost |
+|---|---:|---:|
+| Accuracy | **72.14%** | 71.10% |
+| Precision (Hate class) | 72.93% | 72.97% |
+| Recall (Hate class) | **77.63%** | 74.52% |
+| F1-score (Hate class) | **75.21%** | 73.74% |
+| ROC-AUC | **79.34%** | 77.86% |
+| Training time (observed) | 0.2038 s | 7.7587 s |
 
-This project implements an **end-to-end hate speech detection pipeline** using supervised machine learning and NLP. It processes raw social media text, classifies it as *Hate Speech* or *Not Hate Speech*, and serves predictions through an interactive Flask web application.
+Logistic Regression performed better on accuracy, recall, F1-score, and ROC-AUC in this run. XGBoost had marginally higher Hate-class precision. Training times are machine- and environment-dependent and should not be treated as fixed benchmarks.
 
-> **Course:** INT375 – Data Science Toolbox: Python Programming  
-> **Institution:** Lovely Professional University, Punjab  
-> **Student:** Mujtaba Kamal · Reg. No: 12319576  
-> **Supervisor:** Anand Kumar (UID: 30561)
+## Features
 
----
+- Binary text classification: Hate Speech / Not Hate Speech.
+- Two model predictions from the same submitted text.
+- Estimated probability for the Hate class from each model.
+- Held-out test accuracy displayed separately from per-input probability.
+- Classification reports and model metrics saved to CSV/text.
+- Visualizations: label distribution, accuracy comparison, training time, confusion matrices, and word clouds.
+- Flask API endpoint for browser-based predictions.
 
-## ✨ Features
+## Technology stack
 
-- 🔍 **Real-time prediction** — Input any sentence and get instant results from two models
-- 🤖 **Dual model comparison** — Logistic Regression vs XGBoost side-by-side
-- 📊 **4 built-in visualizations** — Label distribution, model accuracy, training time, confusion matrices
-- 🧠 **TF-IDF vectorization** — Captures word importance across 10,000 features
-- 💾 **Saved model pipeline** — Pre-trained `.pkl` models for instant inference
-- 📱 **Responsive UI** — Clean, mobile-friendly web interface
+- Python
+- Pandas
+- Scikit-learn
+- TF-IDF
+- Logistic Regression
+- XGBoost
+- Flask
+- Joblib
+- Matplotlib and Seaborn
+- WordCloud
 
----
-
-## 🖥️ Web Application
-
-<table>
-<tr>
-<td align="center"><b>Prediction Interface</b></td>
-<td align="center"><b>Results Panel</b></td>
-</tr>
-<tr>
-<td>Enter any sentence → click Predict → instant output from both models</td>
-<td>Shows prediction label + accuracy for Logistic Regression & XGBoost</td>
-</tr>
-</table>
-
----
-
-## 📊 Model Performance
-
-| Model | Accuracy | Precision | Recall | F1-Score | Training Time |
-|-------|----------|-----------|--------|----------|---------------|
-| **Logistic Regression** | 69.47% | 0.69 | 0.69 | 0.69 | ~0.2s |
-| **XGBoost** | 69.01% | 0.69 | 0.69 | 0.69 | ~2.6s |
-
-> Both models trained on **32,770 samples** (80/20 train-test split), tested on **6,554 samples**
-
----
-
-## 📉 Visualizations
-
-| Chart | Description |
-|-------|-------------|
-| **Label Distribution** | ~17,000 hate vs ~15,800 not-hate samples — near-balanced dataset |
-| **Model Accuracy Comparison** | Both models achieve ~69% accuracy on test set |
-| **Confusion Matrices** | LogReg: 2064 TN / 2489 TP · XGBoost: 2180 TN / 2343 TP |
-| **Training Time** | LogReg: ~0.2s · XGBoost: ~2.6s — clear efficiency trade-off |
-
----
-
-## 🗂️ Project Structure
+## Repository structure
 
 ```
 Hate-Speech-Detection-On-Social-Media/
-│
-├── 📁 backend/
-│   ├── model_logreg.pkl          # Trained Logistic Regression model
-│   ├── model_xgb.pkl             # Trained XGBoost model
-│   ├── vectorizer.pkl            # Fitted TF-IDF vectorizer
-│   ├── model_accuracy.txt        # Saved accuracy scores
-│   └── classification_reports.txt # Full precision/recall/F1 reports
-│
-├── 📁 frontend/
+├── data/
+│   └── 2020-12-31-DynamicallyGeneratedHateDataset-entries-v0.1.csv
+├── backend/
+│   ├── app.py
+│   ├── model_logreg.pkl          # generated by training
+│   ├── model_xgb.pkl             # generated by training
+│   ├── vectorizer.pkl            # generated by training
+│   ├── model_accuracy.txt        # generated by training
+│   ├── model_metrics.csv         # generated by training
+│   └── classification_reports.txt
+├── frontend/
 │   ├── templates/
-│   │   └── index.html            # Main web interface
+│   │   └── index.html
 │   └── static/
-│       ├── style.css             # Responsive styling
-│       ├── label_distribution.png
-│       ├── model_accuracy.png
-│       ├── model_training_time.png
-│       └── confusion_matrices.png
-│
-├── 📁 data/
-│   ├── entries-v0.1.csv          # Social media text samples
-│   └── targets-v0.1.csv          # Hate / not-hate labels
-│
-├── 📁 graphs/                    # All generated visualization PNGs
-│
-├── app.py                        # Flask backend & API routes
-├── train_models.py               # Full training pipeline
-├── requirements.txt              # Python dependencies
-├── finalDataScprj.pdf            # Academic project report
+│       └── style.css
+├── graphs/                       # generated visualizations
+├── train_models.py
+├── requirements.txt
+├── .gitignore
 └── README.md
 ```
 
----
+The targets CSV is not required to train this binary classifier. If you keep a local copy of it for other analysis, it is not read by `train_models.py`.
 
-## 🚀 Getting Started
+## Setup and run (Windows / VS Code)
 
-### Prerequisites
-- Python 3.9+
-- pip
+### 1. Clone the repository
 
-### Installation
-
-```bash
-# 1. Clone the repository
+```powershell
 git clone https://github.com/Mujjjtaba/Hate-Speech-Detection-On-Social-Media.git
 cd Hate-Speech-Detection-On-Social-Media
+```
 
-# 2. Create and activate virtual environment
+### 2. Put the entries CSV inside `data/`
+
+Create a folder named `data` and place the original file here:
+
+```
+data/2020-12-31-DynamicallyGeneratedHateDataset-entries-v0.1.csv
+```
+
+The dataset is from the Dynamically Generated Hate Dataset. The CSV is kept separate from the application code.
+
+### 3. Create and activate a virtual environment
+
+```powershell
 python -m venv .venv
-.venv\Scripts\activate        # Windows
-# source .venv/bin/activate   # macOS/Linux
+.venv\\Scripts\\Activate.ps1
+```
 
-# 3. Install dependencies
+If PowerShell blocks activation, you can use Command Prompt instead:
+
+```cmd
+.venv\\Scripts\\activate
+```
+
+### 4. Install dependencies
+
+```powershell
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### Train the Models (Optional — pre-trained models included)
+### 5. Train the models
 
-```bash
-# Place dataset CSVs in /data folder, then run:
+Run this from the repository root:
+
+```powershell
 python train_models.py
 ```
 
-### Run the Web App
+This creates the model files and reports in `backend/`, and the generated charts in `graphs/`.
 
-```bash
-python app.py
+### 6. Start the Flask application
+
+```powershell
+python backend/app.py
 ```
 
-Then open your browser and go to → **`http://127.0.0.1:5000`**
+Open **http://127.0.0.1:5000** in Chrome, Edge, or another browser. Keep the terminal open while using the application. Press `Ctrl+C` to stop the server.
 
----
+## How the pipeline works
 
-## 🧪 How It Works
+1. Read `text` and `label` from the entries CSV.
+2. Remove missing records, normalize text and labels, remove exact duplicate text-label rows, and exclude identical text with conflicting labels.
+3. Encode `hate` as 1 and `nothate` as 0.
+4. Split the records into training and test partitions using a stratified 80:20 split.
+5. Fit TF-IDF on the training text only, then transform the held-out test text with the same vectorizer. This avoids fitting the vocabulary using test data.
+6. Train Logistic Regression and XGBoost independently.
+7. Evaluate both models using accuracy, precision, recall, F1-score, ROC-AUC, and confusion matrices.
+8. Save both models and the fitted vectorizer with Joblib.
+9. Flask loads the saved artifacts, vectorizes new user input, obtains both predictions and returns JSON to the frontend.
 
-```
-User Input Text
-      │
-      ▼
-TF-IDF Vectorizer (10,000 features)
-      │
-      ├──▶ Logistic Regression ──▶ Hate / Not Hate + Accuracy
-      │
-      └──▶ XGBoost Classifier  ──▶ Hate / Not Hate + Accuracy
-```
+## Flask routes
 
-1. **Text is vectorized** using a pre-fitted TF-IDF transformer
-2. **Both models run inference** independently on the same input
-3. **Results returned as JSON** and rendered live in the browser
+| Route | Method | Purpose |
+|---|---|---|
+| `/` | GET | Renders the web interface |
+| `/predict` | POST | Returns both model predictions, Hate-class probabilities, and test accuracies |
+| `/graphs/<filename>` | GET | Serves generated visualizations from the root `graphs/` directory |
 
----
+## Notes and limitations
 
-## 📦 Dependencies
+- The displayed **test accuracy** describes model performance on the held-out test set. It is not the confidence of a particular prediction.
+- **Hate probability** is the model-estimated probability for the Hate class; it is not a guarantee or a definitive judgement.
+- Hate speech is context-dependent. A model can misclassify quoted, reclaimed, sarcastic, or context-specific language.
+- This is an academic demonstration, not a production moderation or enforcement system. Human review is recommended for consequential decisions.
+- Reproducibility is supported by a fixed split seed, but execution times vary by hardware and software environment.
 
-```txt
-flask
-pandas
-scikit-learn
-xgboost
-matplotlib
-seaborn
-joblib
-wordcloud
-```
-
-Install all with:
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## 📁 Dataset
-
-- **Source:** [Dynamically Generated Hate Dataset — Kaggle](https://www.kaggle.com/)
-- **Size:** ~32,770 labeled samples
-- **Format:** Two CSV files merged on `id` column
-- **Labels:** `hate` → 1, `not` → 0
-- **Split:** 80% train / 20% test
-
----
-
-## 🔬 Key Technical Decisions
-
-| Decision | Reason |
-|----------|--------|
-| TF-IDF over Bag-of-Words | Captures word importance, not just frequency |
-| Logistic Regression as baseline | Fast, interpretable, strong for linear separability |
-| XGBoost as main model | Handles non-linear patterns in language better |
-| Flask over Django | Lightweight, ideal for ML model serving |
-| joblib for serialization | Efficient model/vectorizer persistence |
-
----
-
-## 🔮 Future Scope
-
-- [ ] BERT / RoBERTa transformer integration for context-aware detection
-- [ ] Multilingual support (Hindi, Arabic, Spanish)
-- [ ] Twitter/Reddit API integration for live feed analysis
-- [ ] SHAP/LIME explainability for model transparency
-- [ ] Docker containerization for cloud deployment (AWS/GCP)
-- [ ] Mobile app / browser extension version
-
----
-
-## 📚 References
-
-1. Davidson et al. (2017) — *Automated Hate Speech Detection and the Problem of Offensive Language*
-2. de Gibert et al. (2018) — *Hate Speech Dataset from a White Supremacy Forum*
-3. Sap et al. (2019) — *The Risk of Racial Bias in Hate Speech Detection*
-4. [Scikit-learn Documentation](https://scikit-learn.org/)
-5. [XGBoost Documentation](https://xgboost.readthedocs.io/)
-6. [Flask Documentation](https://flask.palletsprojects.com/)
-
----
-
-## 👤 Author
+## Author
 
 **Mujtaba Kamal**  
-B.Tech CSE/IT · Lovely Professional University  
-Registration No: 12319576
+B.Tech CSE, Lovely Professional University
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat&logo=linkedin)](https://www.linkedin.com/in/mujtaba11)
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat&logo=github)](https://github.com/Mujjjtaba)
+- GitHub: [@Mujjjtaba](https://github.com/Mujjjtaba)
+- LinkedIn: [mujtaba11](https://www.linkedin.com/in/mujtaba11)
 
----
+## License
 
-## 📄 License
-
-This project is licensed under the **MIT License** — free to use, modify, and distribute with attribution.
-
----
-
-<div align="center">
-  <sub>Built with Python, Flask & ❤️ · Lovely Professional University · 2025</sub>
-</div>
+The repository previously displayed an MIT badge. Retain or add an MIT license file only if the project owner intends to distribute the code under that license.
