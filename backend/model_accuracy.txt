@@ -1,0 +1,2 @@
+Logistic Regression Accuracy: 0.7214
+XGBoost Accuracy: 0.7110

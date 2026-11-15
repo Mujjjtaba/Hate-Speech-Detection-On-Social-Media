@@ -1,0 +1,3 @@
+Model,Accuracy,Precision,Recall,F1 Score,Training Time,Prediction Time,ROC AUC
+Logistic Regression,0.7214,0.7293,0.7763,0.7521,0.2038,0.0003,0.7934
+XGBoost,0.7110,0.7297,0.7452,0.7374,7.7587,0.0113,0.7786
