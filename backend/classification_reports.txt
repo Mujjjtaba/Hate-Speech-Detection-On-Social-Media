@@ -1,0 +1,22 @@
+LOGISTIC REGRESSION REPORT
+
+              precision    recall  f1-score   support
+
+    Not Hate       0.71      0.66      0.68      3687
+        Hate       0.73      0.78      0.75      4404
+
+    accuracy                           0.72      8091
+   macro avg       0.72      0.72      0.72      8091
+weighted avg       0.72      0.72      0.72      8091
+
+
+XGBOOST REPORT
+
+              precision    recall  f1-score   support
+
+    Not Hate       0.69      0.67      0.68      3687
+        Hate       0.73      0.75      0.74      4404
+
+    accuracy                           0.71      8091
+   macro avg       0.71      0.71      0.71      8091
+weighted avg       0.71      0.71      0.71      8091
